@@ -1,0 +1,59 @@
+# .NET Core / .NET Framework
+bin/
+obj/
+**/*.user
+**/*.userosscache
+**/*.suo
+**/*.sln.docstates
+.vs/
+.vscode/
+.idea/
+*.dbmdl
+*.bak
+*.log
+*.DMP
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# ASP.NET Scaffolding
+ScaffoldingReadMe.txt
+
+# Node modules for Angular
+node_modules/
+
+# Build output directories
+/dist/
+/out/
+npm-debug.log
+yarn-error.log
+package-lock.json
+
+# Angular specific
+.angular/
+
+# TypeScript
+*.tsbuildinfo
+
+# VS Code settings
+.vscode/
+
+# JetBrains Rider settings
+.idea/
+
+# Mac OS specific
+.DS_Store
+
+# Windows specific
+Thumbs.db
+
+# npm logs
+npm-debug.log*
+
+# Angular CLI cache
+.angular-cli.json
+
+*.Development.json

@@ -1,0 +1,39 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form>
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="email" id="email" class="form-control form-control-lg"
+                               placeholder="Enter a valid email address" />
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <input type="password" id="password" class="form-control form-control-lg"
+                               placeholder="Enter password" />
+                    </div>
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <input type="password" id="repeat-password" class="form-control form-control-lg"
+                               placeholder="Repeat password" />
+                    </div>
+
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-success me-3"
+                                (click)="create()"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Register
+                        </button>
+
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
+                                routerLink=""
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Back
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

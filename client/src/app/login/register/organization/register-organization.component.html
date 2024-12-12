@@ -1,0 +1,54 @@
+<section class="vh-100">
+    <div class="container-fluid h-custom">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+                <form [formGroup]="registerForm" autocomplete="off" (ngSubmit)="submit()">
+
+                    <div data-mdb-input-init class="form-outline mb-4">
+                        <input type="text" id="name" class="form-control form-control-lg" formControlName="name"
+                               placeholder="Enter the name of organization" />
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <textarea id="description" class="form-control form-control-lg" formControlName="description"
+                                  placeholder="Enter description/details"></textarea>
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <input type="text" id="country" class="form-control form-control-lg" formControlName="country"
+                               placeholder="Enter country" />
+                    </div>
+
+                    <div data-mdb-input-init class="form-outline mb-3">
+                        <input type="text" id="city" class="form-control form-control-lg" formControlName="city"
+                               placeholder="Enter city" />
+                    </div>
+
+                    <div class="text-center text-lg-start mt-4 pt-2">
+                        <button (click)="submit()" [disabled]="!registerForm.valid && registerSubmitted"
+                                type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-success me-3"
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Register
+                        </button>
+
+                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary"
+                                routerLink=""
+                                style="padding-left: 2.5rem; padding-right: 2.5rem;">
+                            Back
+                        </button>
+                    </div>
+                </form>
+                <br />
+                @if(validationErrors?.length ?? 0 > 0){
+                <div class="alert alert-danger text-start">
+                    <ul>
+                        @for(error of validationErrors; track $index){
+                        <li>{{error}}</li>
+                        }
+                    </ul>
+                </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
