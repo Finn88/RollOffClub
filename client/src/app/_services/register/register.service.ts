@@ -12,6 +12,12 @@ export class RegisterService {
   baseUrl = environment.apiUrl;
 
   registerOrganization(model: Organization): Observable<Organization> {
-    return this.http.post<Organization>(`${this.baseUrl}organization/register`, model)
+    return this.http.post<Organization>(`${this.baseUrl}organizations/register`, model);
+  }
+
+  getData(): Observable<any> {
+    return this.http.get<any>(`${this.baseUrl}organizations/data`, {
+      responseType: 'text' as 'json' // Ensure Angular treats the response as plain text
+    });
   }
 }

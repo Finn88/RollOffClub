@@ -35,7 +35,7 @@ export class LoginFormComponent implements OnInit {
     const token = this.route.snapshot.queryParamMap.get('token');
     const loginService = this.route.snapshot.queryParamMap.get('loginService');
     if (token && loginService) {
-      this.tokenStorageService.storeToken(token);
+      this.tokenStorageService.storeToken(token!);
       this.router.navigate(['/dashboard']);
     }
   }

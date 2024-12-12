@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.Facebook;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
@@ -7,52 +6,19 @@ namespace API.Extensions
 {
     public static class AuthenticationExtension
     {
-        public static void AddAuthAuthenticationGoogle(this WebApplicationBuilder builder)
-        {
-            var googleAccountsUrl = "https://accounts.google.com";
-            builder.Services
-                .AddAuthentication(options =>
-                      {
-                          options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                          options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
-                      })
-                .AddJwtBearer(options =>
-                    {
-                        options.Authority = googleAccountsUrl;
-                        options.TokenValidationParameters = new TokenValidationParameters
-                        {
-                            ValidateIssuer = true,
-                            ValidIssuer = googleAccountsUrl,
-                            ValidateAudience = true,
-                            ValidAudience = $"{builder.Configuration["Google:ClientId"]}",
-                            ValidateLifetime = true
-                        };
-                    });
-        }
-
-        public static void AddAuthAuthenticationFacebook(this WebApplicationBuilder builder)
-        {
-
-            builder.Services.AddAuthentication(options =>
-            {
-                options.DefaultAuthenticateScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = FacebookDefaults.AuthenticationScheme;
-                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-            })
-                    .AddCookie()
-                    .AddFacebook(options =>
-                    {
-                        options.AppId = builder.Configuration["Facebook:AppId"];
-                        options.AppSecret = builder.Configuration["Facebook:AppSecret"];
-                        options.CallbackPath = "/authfacebook/callback";
-                        options.Scope.Add("email");  
-                        options.Fields.Add("name");
-                        options.Fields.Add("email");
-                        options.SaveTokens = true; 
-                    });
-
-
+        public static void AddIdentityServices(this WebApplicationBuilder builder) {
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+              .AddJwtBearer(options =>
+              {
+                  var tokenKey = builder.Configuration["TokenKey"] ?? throw new Exception("Token not found");
+                  options.TokenValidationParameters = new TokenValidationParameters
+                  {
+                      ValidateIssuerSigningKey = true,
+                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenKey)),
+                      ValidateIssuer = false,
+                      ValidateAudience = false
+                  };
+              });
         }
     }
 }

@@ -14,9 +14,7 @@ builder.Services.AddDbContext<DataContext>(opt => {
 });
 builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(List.Handler).Assembly));
 builder.Services.AddAutoMapper(typeof(MappingProfile).Assembly);
-builder.AddAuthAuthenticationGoogle();
-builder.AddAuthAuthenticationFacebook();
-
+builder.AddIdentityServices();
 
 var app = builder.Build();
 

@@ -7,7 +7,7 @@ namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-   // [Authorize]
+    [Authorize]
     public class OrganizationsController : BaseApiController
     {
         [HttpPost("register")]

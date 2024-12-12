@@ -9,7 +9,7 @@ import { AuthenticationService } from '../../_models/authenticationService';
 })
 export class AuthGoogleService implements AuthenticationService {
   private http = inject(HttpClient); 
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.authApiUrl;
 
   login(): void {
     window.location.href = `${this.baseUrl}authgoogle/login`; 
