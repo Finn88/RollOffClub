@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 
-namespace API.Extensions
+namespace GatewayAPI.Extensions
 {
     public static class AuthenticationExtension
     {
@@ -19,6 +19,14 @@ namespace API.Extensions
                       ValidateAudience = false
                   };
               });
+
+            builder.Services.AddAuthorization(options =>
+            {
+                options.AddPolicy("AuthenticatedUsers", policy =>
+                {
+                    policy.RequireAuthenticatedUser();
+                });
+            });
         }
     }
 }
