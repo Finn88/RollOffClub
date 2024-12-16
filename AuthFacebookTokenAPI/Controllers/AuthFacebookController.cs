@@ -1,8 +1,7 @@
 ﻿using AuthFacebookTokenAPI.Utils;
-using AuthFacebookTokenAPI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
+using Domain.Entities;
 
 namespace AuthFacebookTokenAPI.Controllers
 {
@@ -22,38 +21,36 @@ namespace AuthFacebookTokenAPI.Controllers
         [HttpGet("login")]
         public IActionResult Login()
         {
-            string facebookOAuthUrl = FacebookRequestHelper.GetAuthUrl(_configuration["Facebook:AppId"], _baseUrl);
+            string facebookOAuthUrl = FacebookRequestHelper.GetAuthUrl(_configuration["Facebook:AppId"], _configuration["ClientUrl"]);
             return Redirect(facebookOAuthUrl);
         }
 
-        [HttpGet("callback")]
-        public async Task<IActionResult> Callback(string? code)
+        [HttpPost("token")]
+        public async Task<IActionResult> Callback([FromBody] string code)
         {
-            var token = string.Empty;
-            var email = string.Empty;
-            using (var client = new HttpClient())
+            var tokenUrl = FacebookRequestHelper.GetTokenUrl();
+            var tokenRequest = new HttpRequestMessage(HttpMethod.Post, tokenUrl)
             {
-                var tokenUrl = FacebookRequestHelper.GetTokenUrl(_configuration["Facebook:AppId"], _configuration["Facebook:AppSecret"], _baseUrl, code);
-                var response = await client.GetAsync(tokenUrl);
+                Content = new FormUrlEncodedContent(new Dictionary<string, string>
+                {
+                    { "code", code },
+                    { "client_id", $"{_configuration["Facebook:AppId"]}" },
+                    { "client_secret", _configuration["Facebook:AppSecret"] },
+                    { "redirect_uri",FacebookRequestHelper.GetRedirectBaseUrl(_configuration["ClientUrl"]) }
+                })
+            };
+            var httpClient = new HttpClient();
+            var response = await httpClient.SendAsync(tokenRequest);
+            var responseContent = await response.Content.ReadAsStringAsync();
 
-                var responseString = await response.Content.ReadAsStringAsync();
-                var jsonResponse = JsonConvert.DeserializeObject<JObject>(responseString);
-                token = jsonResponse["access_token"]?.ToString();
-            }
 
-            using (var client = new HttpClient())
-            {
-                var emailUrl = FacebookRequestHelper.GetEmailUrl(token);
-                var response = await client.GetAsync(emailUrl);
+            if (!response.IsSuccessStatusCode)
+                return StatusCode((int)response.StatusCode, responseContent);
 
-                var responseString = await response.Content.ReadAsStringAsync();
-                var jsonResponse = JsonConvert.DeserializeObject<JObject>(responseString);
-                email = jsonResponse["email"]?.ToString();
-            }
+            var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseContent);
+            var jwtToken = tokenResponse?.IdToken ?? string.Empty;
 
-            var jwtToken = await new TokenService().CreateToken(_configuration["TokenKey"], email);
-            var clientRedirectUrl = FacebookRequestHelper.GetRedirectUrl(_configuration["ClientUrl"], jwtToken);
-            return Redirect(clientRedirectUrl);
+            return Ok(new { token = jwtToken });
         }
     }
 }

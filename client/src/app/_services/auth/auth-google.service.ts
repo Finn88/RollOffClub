@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
@@ -16,7 +16,10 @@ export class AuthGoogleService implements AuthenticationService {
   }
 
 
-  handleCallback(code: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}authgoogle/callback?code=${code}`);
+  getToken(code: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}authgoogle/token`,
+      JSON.stringify(code),
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
   }
 }

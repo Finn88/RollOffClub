@@ -6,6 +6,7 @@ import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AuthFacebookService } from '../../_services/auth/auth-facebook.service';
 import { AuthGoogleService } from '../../_services/auth/auth-google.service';
 import { TokenStorageService } from '../../_services/token-storage.service';
+import { AuthenticationService } from '../../_models/authenticationService';
 
 export function customEmailValidator(control: any) {
   const email = control.value;
@@ -32,12 +33,30 @@ export class LoginFormComponent implements OnInit {
   user: any = null;
 
   ngOnInit(): void {
-    const token = this.route.snapshot.queryParamMap.get('token');
-    const loginService = this.route.snapshot.queryParamMap.get('loginService');
-    if (token && loginService) {
-      this.tokenStorageService.storeToken(token!);
-      this.router.navigate(['/dashboard']);
+    const code = this.route.snapshot.queryParamMap.get('code');
+    const authServiceName = this.route.snapshot.queryParamMap.get('authService');
+    if (code && authServiceName) {
+      switch (authServiceName){
+        case 'facebook':
+          this.loadToken(this.authFacebookService, code);
+          break;
+        case 'google':
+          this.loadToken(this.authGoogleService, code);
+          break;
+        default: return;
+      }
     }
+  }
+
+  private loadToken(service: AuthenticationService, code: string): void {
+    service
+      .getToken(code)
+      .subscribe({
+        next: (data) => {
+          this.tokenStorageService.storeToken(data.token!);
+          this.router.navigate(['/dashboard']);
+        }
+      })
   }
 
   loginGoogle(): void {

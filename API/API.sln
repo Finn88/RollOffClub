@@ -14,8 +14,14 @@ EndProject
 Project("{54A90642-561A-4BB1-A94E-469ADEE60C69}") = "client", "..\client\client.esproj", "{1F48A7EA-21CD-4EC8-BC97-BFC5F305A013}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthGoogleTokenAPI", "..\AuthGoogleTokenAPI\AuthGoogleTokenAPI.csproj", "{A1D67BCC-A32E-4906-927B-AF0BA6D8FB03}"
+	ProjectSection(ProjectDependencies) = postProject
+		{599A2E19-3C49-4E45-994E-C27FE297F07A} = {599A2E19-3C49-4E45-994E-C27FE297F07A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AuthFacebookTokenAPI", "..\AuthFacebookTokenAPI\AuthFacebookTokenAPI.csproj", "{3A1D2FAF-941C-43F7-9CFC-C9540EA28E55}"
+	ProjectSection(ProjectDependencies) = postProject
+		{599A2E19-3C49-4E45-994E-C27FE297F07A} = {599A2E19-3C49-4E45-994E-C27FE297F07A}
+	EndProjectSection
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GatewayAPI", "..\GatewayAPI\GatewayAPI.csproj", "{DD8426B7-BC98-4EB9-BBC0-B67CC5082A86}"
 EndProject

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { environment } from '../../../environments/environment.development';
 import { Observable } from 'rxjs';
@@ -15,8 +15,10 @@ export class AuthFacebookService implements AuthenticationService {
     window.location.href = `${this.baseUrl}authfacebook/login`; 
   }
 
-
-  handleCallback(code: string): Observable<any> {
-    return this.http.get(`${this.baseUrl}authfacebook/callback?code=${code}`);
+  getToken(code: string): Observable<any> {
+    return this.http.post(`${this.baseUrl}authfacebook/token`,
+      JSON.stringify(code),
+      { headers: new HttpHeaders({ 'Content-Type': 'application/json' }) }
+    );
   }
 }

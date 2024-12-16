@@ -1,10 +1,7 @@
-﻿using AuthGoogleTokenAPI.Services;
-using AuthGoogleTokenAPI.Utils;
+﻿using AuthGoogleTokenAPI.Utils;
+using Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System.Net.Http.Headers;
-using System.Text.Json;
 
 namespace AuthGoogleTokenAPI.Controllers
 {
@@ -24,12 +21,12 @@ namespace AuthGoogleTokenAPI.Controllers
         [HttpGet("login")]
         public IActionResult Login()
         {
-            var googleAuthUrl = GoogleRequestHelper.GetAuthUrl(_configuration["Google:ClientId"], _baseUrl);
+            var googleAuthUrl = GoogleRequestHelper.GetAuthUrl(_configuration["Google:ClientId"], _configuration["ClientUrl"]);
             return Redirect(googleAuthUrl);
         }
 
-        [HttpGet("callback")]
-        public async Task<IActionResult> Callback(string code)
+        [HttpPost("token")]
+        public async Task<IActionResult> Callback([FromBody] string code)
         {
             if (string.IsNullOrEmpty(code))
                 return BadRequest("No code received");
@@ -42,7 +39,7 @@ namespace AuthGoogleTokenAPI.Controllers
                     { "code", code },
                     { "client_id", $"{_configuration["Google:ClientId"]}" },
                     { "client_secret", _configuration["Google:ClientSecret"] },
-                    { "redirect_uri", $"{GoogleRequestHelper.GetRedirectBaseUrl(_baseUrl)}" },
+                    { "redirect_uri", $"http://{_configuration["ClientUrl"]}?authService=google" },
                     { "grant_type", "authorization_code" }
                 })
             };
@@ -54,22 +51,10 @@ namespace AuthGoogleTokenAPI.Controllers
             if (!response.IsSuccessStatusCode)
                 return StatusCode((int)response.StatusCode, responseContent);
 
-            var tokenResponse = JsonConvert.DeserializeObject<JObject>(responseContent);
+            var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseContent);
+            var jwtToken = tokenResponse?.IdToken ?? string.Empty;
 
-            var userInfoRequest = new HttpRequestMessage(HttpMethod.Get, GoogleRequestHelper.GetUserInfoUrl());
-            userInfoRequest.Headers.Authorization = new AuthenticationHeaderValue("Bearer", tokenResponse["access_token"]?.ToString());
-
-            var userInfoResponse = await httpClient.SendAsync(userInfoRequest);
-            var userInfoContent = await userInfoResponse.Content.ReadAsStringAsync();
-            var userInfoContentResponse = JsonConvert.DeserializeObject<JObject>(userInfoContent);
-            var email = userInfoContentResponse["email"]?.ToString();
-
-            if (!userInfoResponse.IsSuccessStatusCode)
-                return StatusCode((int)userInfoResponse.StatusCode, userInfoContent);
-
-            var jwtToken = await new TokenService().CreateToken(_configuration["TokenKey"], email);
-            var clientRedirectUrl = GoogleRequestHelper.GetRedirectUrl(_configuration["ClientUrl"], jwtToken);
-            return Redirect(clientRedirectUrl);
+            return Ok(new { token = jwtToken });
         }
     }
 }
