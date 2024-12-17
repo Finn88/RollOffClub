@@ -9,13 +9,11 @@ namespace AuthFacebookTokenAPI.Controllers
     [Route("api/[controller]")]
     public class AuthFacebookController : ControllerBase
     {
-        private readonly string _baseUrl;
         private readonly IConfiguration _configuration;
 
         public AuthFacebookController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _baseUrl = _configuration["HostUrl"];
         }
 
         [HttpGet("login")]

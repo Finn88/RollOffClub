@@ -9,13 +9,11 @@ namespace AuthGoogleTokenAPI.Controllers
     [Route("api/[controller]")]
     public class AuthGoogleController : ControllerBase
     {
-        private readonly string _baseUrl;
 
         private readonly IConfiguration _configuration;
         public AuthGoogleController(IConfiguration configuration)
         {
             _configuration = configuration;
-            _baseUrl = _configuration["HostUrl"];
         }
 
         [HttpGet("login")]

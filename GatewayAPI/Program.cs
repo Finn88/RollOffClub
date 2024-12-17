@@ -1,4 +1,5 @@
 
+using GatewayAPI.Entities;
 using GatewayAPI.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,7 +10,8 @@ builder.Services.AddControllers();
 builder.Services.AddReverseProxy()
     .LoadFromConfig(builder.Configuration.GetSection("ReverseProxy"));
 
-builder.AddIdentityServices();
+var scheme = AuthenticationScheme.Custom | AuthenticationScheme.Google | AuthenticationScheme.Facebook;
+builder.AddIdentityServices(scheme);
 
 var app = builder.Build();
 

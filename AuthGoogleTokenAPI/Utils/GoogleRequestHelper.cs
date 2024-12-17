@@ -19,16 +19,5 @@ namespace AuthGoogleTokenAPI.Utils
         {
             return GoogleTokenUrl;
         }
-
-
-        public static string GetRedirectUrl(string clientUrl, string token)
-        {
-            return $"http://{clientUrl}?token={token}&loginService=google";
-        }
-
-        public static string GetRedirectBaseUrl(string baseUrl)
-        {
-            return $"http://{baseUrl}/api/authgoogle/callback";
-        }
     }
 }
