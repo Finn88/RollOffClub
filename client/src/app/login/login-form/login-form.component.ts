@@ -5,7 +5,6 @@ import { NgIf } from '@angular/common';
 import { PopoverModule } from 'ngx-bootstrap/popover';
 import { AuthFacebookService } from '../../_services/auth/auth-facebook.service';
 import { AuthGoogleService } from '../../_services/auth/auth-google.service';
-import { TokenStorageService } from '../../_services/token-storage.service';
 import { AuthenticationService } from '../../_models/authenticationService';
 
 export function customEmailValidator(control: any) {
@@ -29,7 +28,6 @@ export class LoginFormComponent implements OnInit {
   private router = inject(Router);
   private authGoogleService = inject(AuthGoogleService);
   private authFacebookService = inject(AuthFacebookService);
-  private tokenStorageService = inject(TokenStorageService);
   user: any = null;
 
   ngOnInit(): void {
@@ -48,17 +46,18 @@ export class LoginFormComponent implements OnInit {
     }
   }
 
-  private loadToken(service: AuthenticationService, code: string): void {
-    service
+  private loadToken(authService: AuthenticationService, code: string): void {
+    authService
       .getToken(code)
       .subscribe({
-        next: (data) => {
-          this.tokenStorageService.storeToken(data.token!);
+        next: () => {
           this.router.navigate(['/dashboard']);
         }
       })
   }
 
+
+  
   loginGoogle(): void {
     this.authGoogleService.login();
   }

@@ -1,8 +1,8 @@
-import { Component, OnDestroy, OnInit, inject, signal } from '@angular/core';
+import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef, inject, signal } from '@angular/core';
 import { RegisterService } from '../../_services/register/register.service';
 import { Subscription } from 'rxjs';
-import { TokenStorageService } from '../../_services/token-storage.service';
 import { Router } from '@angular/router';
+import { AuthService } from '../../_services/auth/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,10 +13,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   protected subscription: Subscription | null = null;
   protected data = signal<string>('init value');
   private orgService = inject(RegisterService);
-  private tockenService = inject(TokenStorageService);
-  private router = inject(Router);
+  private authService = inject(AuthService);
 
-  ngOnInit(): void {
+
+   ngOnInit() {
     this.subscription = this.orgService.getData()
       .subscribe({
         next: val => {
@@ -30,7 +30,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
   }
 
   logOut(): void {
-    this.tockenService.removeToken();
-    this.router.navigate(['']);
+    this.authService.logout();
   }
 }

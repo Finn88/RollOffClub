@@ -58,6 +58,7 @@ namespace GatewayAPI.Extensions
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+                SetOnMessageReceivedEvent(ref options);
             });
         }
         public static void AddGoogleJwt(this AuthenticationBuilder authenticationBuilder, string clientId)
@@ -67,14 +68,17 @@ namespace GatewayAPI.Extensions
                 options.Authority = GoogleUrl;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
+
                     ValidateIssuer = true,
                     ValidIssuer = GoogleUrl,
                     ValidateAudience = true,
                     ValidAudience = clientId,
                     ValidateLifetime = true
                 };
+                SetOnMessageReceivedEvent(ref options);
             });
-        }        
+        }
+
         public static void AddFacebookJwt(this AuthenticationBuilder authenticationBuilder, string appId)
         {
             authenticationBuilder.AddJwtBearer("Facebook", options =>
@@ -88,7 +92,24 @@ namespace GatewayAPI.Extensions
                     ValidAudience = appId,
                     ValidateLifetime = true
                 };
+                SetOnMessageReceivedEvent(ref options);
             });
+        }
+
+        private static void SetOnMessageReceivedEvent(ref JwtBearerOptions options)
+        {
+            options.Events = new JwtBearerEvents
+            {
+                OnMessageReceived = context =>
+                {
+                    var token = context.HttpContext.Request.Cookies["AuthToken"];
+                    if (!string.IsNullOrEmpty(token))
+                    {
+                        context.Token = token;
+                    }
+                    return Task.CompletedTask;
+                }
+            };
         }
     }
 

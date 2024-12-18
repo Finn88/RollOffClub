@@ -26,4 +26,5 @@ app.UseCors(x =>
 app.MapReverseProxy();
 app.UseAuthentication();
 app.UseAuthorization();
+app.MapControllers();
 app.Run();

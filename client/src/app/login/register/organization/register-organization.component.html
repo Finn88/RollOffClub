@@ -39,7 +39,7 @@
                     </div>
                 </form>
                 <br />
-                @if(validationErrors?.length ?? 0 > 0){
+                @if(validationErrors.length > 0){
                 <div class="alert alert-danger text-start">
                     <ul>
                         @for(error of validationErrors; track $index){

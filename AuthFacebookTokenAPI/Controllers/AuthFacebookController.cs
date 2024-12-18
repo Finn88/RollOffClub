@@ -48,7 +48,14 @@ namespace AuthFacebookTokenAPI.Controllers
             var tokenResponse = JsonConvert.DeserializeObject<TokenResponse>(responseContent);
             var jwtToken = tokenResponse?.IdToken ?? string.Empty;
 
-            return Ok(new { token = jwtToken });
+            Response.Cookies.Append("AuthToken", jwtToken, new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = false,
+                SameSite = SameSiteMode.Strict,
+                Expires = DateTime.UtcNow.AddHours(1)
+            });
+            return Ok();
         }
     }
 }
