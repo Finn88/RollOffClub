@@ -1,8 +1,9 @@
 ﻿namespace Infrastructure.Data
 {
-    public static class RepositoryFactory
+    public class RepositoryFactory(DataContext context) : IRepositoryFactory
     {
-        public static Repository<T> Get<T>(DataContext context) where T : class {
+        public IRepository<T> Get<T>() where T : class 
+        {
             return new Repository<T>(context);
         }
     }
