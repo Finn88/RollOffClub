@@ -3,13 +3,9 @@
 	"version": 1,
 	"newProjectRoot": "projects",
 	"projects": {
-		"header": {
+		"sidebar": {
 			"projectType": "application",
-			"schematics": {
-				"@schematics/angular:component": {
-					"style": "scss"
-				}
-			},
+			"schematics": {},
 			"root": "",
 			"sourceRoot": "src",
 			"prefix": "app",
@@ -17,13 +13,12 @@
 				"build": {
 					"builder": "ngx-build-plus:browser",
 					"options": {
-						"outputPath": "dist/header",
+						"outputPath": "dist/sidebar",
 						"index": "src/index.html",
 						"polyfills": [
 							"zone.js"
 						],
 						"tsConfig": "tsconfig.app.json",
-						"inlineStyleLanguage": "scss",
 						"assets": [
 							{
 								"glob": "**/*",
@@ -32,13 +27,9 @@
 							}
 						],
 						"styles": [
-							"src/styles.scss"
+							"src/styles.css"
 						],
 						"scripts": [],
-					//	"outputMode": "server",
-					/*	"ssr": {
-							"entry": "src/server.ts"
-						},*/
 						"main": "src/main.ts",
 						"extraWebpackConfig": "webpack.config.js",
 						"commonChunk": false
@@ -53,8 +44,8 @@
 								},
 								{
 									"type": "anyComponentStyle",
-									"maximumWarning": "4kB",
-									"maximumError": "8kB"
+									"maximumWarning": "2kB",
+									"maximumError": "4kB"
 								}
 							],
 							"outputHashing": "all",
@@ -69,22 +60,22 @@
 					"defaultConfiguration": "production"
 				},
 				"serve": {
+					"builder": "ngx-build-plus:dev-server",
+					"configurations": {
+						"production": {
+							"buildTarget": "sidebar:build:production",
+							"extraWebpackConfig": "webpack.prod.config.js"
+						},
+						"development": {
+							"buildTarget": "sidebar:build:development"
+						}
+					},
+					"defaultConfiguration": "development",
 					"options": {
 						"port": 4201,
 						"publicHost": "http://localhost:4201",
 						"extraWebpackConfig": "webpack.config.js"
-					},
-					"builder": "ngx-build-plus:dev-server",
-					"configurations": {
-						"production": {
-							"buildTarget": "header:build:production",
-							"extraWebpackConfig": "webpack.prod.config.js"
-						},
-						"development": {
-							"buildTarget": "header:build:development"
-						}
-					},
-					"defaultConfiguration": "development"
+					}
 				},
 				"extract-i18n": {
 					"builder": "@angular-devkit/build-angular:extract-i18n"
@@ -97,7 +88,6 @@
 							"zone.js/testing"
 						],
 						"tsConfig": "tsconfig.spec.json",
-						"inlineStyleLanguage": "scss",
 						"assets": [
 							{
 								"glob": "**/*",
@@ -105,7 +95,7 @@
 							}
 						],
 						"styles": [
-							"src/styles.scss"
+							"src/styles.css"
 						],
 						"scripts": []
 					}
@@ -114,6 +104,6 @@
 		}
 	},
 	"cli": {
-		"analytics": "81c79fe6-caeb-4b2f-b2c7-d5e1a01fcf60"
+		"analytics": "81d968b8-23aa-4e9e-9858-56137fc405e0"
 	}
 }

@@ -1,11 +1,10 @@
+
 const { shareAll, withModuleFederationPlugin } = require('@angular-architects/module-federation/webpack');
 
 module.exports = withModuleFederationPlugin({
-
-  name: 'header',
-
+  name: 'sidebar',
   exposes: {
-    './Component': './src/app/header/header.component.ts',
+    './Sidebar': './src/app/sidebar/sidebar.component.ts'
   },
 
   shared: {

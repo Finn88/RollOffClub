@@ -1,101 +1,99 @@
 
 <section class="vh-100">
-    <div class="container-fluid h-custom">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-md-9 col-lg-6 col-xl-5 mb-3">
-                <img src="https://blog.colonist.io/content/images/size/w2000/2020/09/Rolling-Dice.jpg"
-                     class="img-fluid" alt="Sample image">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-9 col-lg-6 col-xl-5 mb-3">
+        <img src="https://blog.colonist.io/content/images/size/w2000/2020/09/Rolling-Dice.jpg"
+             class="img-fluid" alt="Sample image">
+      </div>
+      <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
+        <form #loginForm="ngForm" (ngSubmit)="onSubmitLoginForm(loginForm)">
+          <div class="form-outline mb-1">
+            <input (input)="onEmailInput(email)"
+                   [popover]="emailErrorsTemplate"
+                   [isOpen]="showEmailError && (email.invalid ?? false)"
+                   triggers=""
+                   placement="right"
+                   type="email"
+                   name="email"
+                   id="email"
+                   ngModel
+                   required
+                   pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
+                   #email="ngModel"
+                   class="form-control form-control-lg"
+                   form
+                   placeholder="Enter a valid email address" />
+          </div>
+          <ng-template #emailErrorsTemplate>
+            <div *ngIf="email.invalid" class="error">
+              <span *ngIf="email.errors?.['required']" class="text-danger fs-6">Email is required</span>
+              <span *ngIf="email.errors?.['pattern']" class="text-danger fs-6">Invalid email format</span>
             </div>
-            <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1">
-                <form #loginForm="ngForm" (ngSubmit)="onSubmitLoginForm(loginForm)">
-                    <div class="form-outline mb-1">
-                        <input 
-                            (input)="onEmailInput(email)"
-                            [popover]="emailErrorsTemplate"
-                            [isOpen]="showEmailError && (email.invalid ?? false)"
-                            triggers=""
-                            placement="right"
-                            type="email" 
-                            name="email"
-                            id="email" 
-                            ngModel
-                            required
-                            pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$"
-                            #email="ngModel"
-                            class="form-control form-control-lg" 
-                            form
-                            placeholder="Enter a valid email address" />
-                    </div>
-                    <ng-template #emailErrorsTemplate>                  
-                        <div *ngIf="email.invalid" class="error">
-                            <span *ngIf="email.errors?.['required']" class="text-danger fs-6">Email is required</span>
-                            <span *ngIf="email.errors?.['pattern']" class="text-danger fs-6">Invalid email format</span>
-                        </div>
-                    </ng-template>
+          </ng-template>
 
-                    <div class="form-outline mt-3 mb-1">
-                        <input 
-                            (input)="onPasswordInput(password)"
-                            [popover]="passwordErrorsTemplate"
-                            [isOpen]="showPasswordError && (password.invalid ?? false)"
-                            triggers=""
-                            placement="right"
-                            type="password"
-                            name="password" 
-                            id="password" 
-                            ngModel
-                            required
-                            #password="ngModel"
-                            class="form-control form-control-lg" 
-                            form
-                            placeholder="Enter password" />
-                    </div>
-                    <ng-template #passwordErrorsTemplate>                  
-                        <div *ngIf="password.invalid" class="error">
-                            <span *ngIf="password.errors?.['required']" class="text-danger fs-6">Password is required</span>
-                        </div>
-                    </ng-template>
-
-
-                    <div class="d-flex justify-content-between align-items-center mt-1">
-                        <div class="form-check mb-0">
-                            <input class="form-check-input me-2" type="checkbox" value="" id="remember" />
-                            <label class="form-check-label" for="remember">
-                                Remember me
-                            </label>
-                        </div>
-                        <a href="#!" class="text-body">Forgot password?</a>
-                    </div>
-
-                    <div class="text-center text-lg-start mt-4 pt-2">
-                        <button 
-                        type="submit"
-                        data-mdb-button-init data-mdb-ripple-init class="btn btn-primary me-3" 
-                        style="padding-left: 2.5rem; padding-right: 2.5rem;">
-                            Login
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1" (click)="loginFacebook()">
-                            <i class="fab fa-facebook-f"></i>
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
-                            <i class="fab fa-discord"></i>
-                        </button>
-
-                        <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1" (click)="loginGoogle()">
-                            <i class="fab fa-google"></i>
-                        </button>
-
-                        <p class="small fw-bold mt-2 pt-1 mb-0">
-                            Don't have an account? <a routerLink="/register-user" class="link-danger">Register</a>
-                        </p>
-                        <p class="small fw-bold mt-2 pt-1 mb-0">
-                            Don't want to register organization? <a routerLink="/register-organization" class="link-danger">Register</a>
-                        </p>
-                    </div>
-                </form>
+          <div class="form-outline mt-3 mb-1">
+            <input (input)="onPasswordInput(password)"
+                   [popover]="passwordErrorsTemplate"
+                   [isOpen]="showPasswordError && (password.invalid ?? false)"
+                   triggers=""
+                   placement="right"
+                   type="password"
+                   name="password"
+                   id="password"
+                   ngModel
+                   required
+                   #password="ngModel"
+                   class="form-control form-control-lg"
+                   form
+                   placeholder="Enter password" />
+          </div>
+          <ng-template #passwordErrorsTemplate>
+            <div *ngIf="password.invalid" class="error">
+              <span *ngIf="password.errors?.['required']" class="text-danger fs-6">Password is required</span>
             </div>
-        </div>
+          </ng-template>
+
+
+          <div class="d-flex justify-content-between align-items-center mt-1">
+            <div class="form-check mb-0">
+              <input class="form-check-input me-2" type="checkbox" value="" id="remember" />
+              <label class="form-check-label" for="remember">
+                Remember me
+              </label>
+            </div>
+            <a href="#!" class="text-body">Forgot password?</a>
+          </div>
+
+          <div class="text-center text-lg-start mt-4 pt-2">
+            <button type="submit"
+                    data-mdb-button-init data-mdb-ripple-init class="btn btn-primary me-3"
+                    style="padding-left: 2.5rem; padding-right: 2.5rem;">
+              Login
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1" (click)="loginFacebook()">
+              <i class="fab fa-facebook-f"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1">
+              <i class="fab fa-discord"></i>
+            </button>
+
+            <button type="button" data-mdb-button-init data-mdb-ripple-init class="btn btn-primary btn-floating mx-1" (click)="loginGoogle()">
+              <i class="fab fa-google"></i>
+            </button>
+
+            <p class="small fw-bold mt-2 pt-1 mb-0">
+              Don't have an account? <a routerLink="/register-user" class="link-danger">Register</a>
+            </p>
+            <p class="small fw-bold mt-2 pt-1 mb-0">
+              Don't want to register organization? <a routerLink="/register-organization" class="link-danger">Register</a>
+            </p>
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
 </section>
+

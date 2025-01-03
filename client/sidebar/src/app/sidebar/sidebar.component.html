@@ -1,0 +1,11 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+
+<div class="sidebar" [class.open]="isOpen">
+  <button class="open-btn" (click)="toggleSidebar()">&#9776;</button>
+  <ul style="clear: both; padding-top:10px">
+    <li><a href="#"><i class="fa fa-home"></i> Home</a></li>
+    <li><a href="#"><i class="fa fa-info-circle"></i> About</a></li>
+    <li><a href="#"><i class="fa fa-cogs"></i> Services</a></li>
+    <li><a href="#"><i class="fa fa-envelope"></i> Contact</a></li>
+  </ul>
+</div>

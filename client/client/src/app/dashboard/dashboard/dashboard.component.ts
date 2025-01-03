@@ -1,12 +1,15 @@
 import { Component, OnDestroy, OnInit, ViewChild, ViewContainerRef, inject, signal } from '@angular/core';
+import { CommonModule, NgFor } from '@angular/common';
 import { RegisterService } from '../../_services/register/register.service';
 import { Subscription } from 'rxjs';
 import { AuthService } from '../../_services/auth/auth.service';
 
 @Component({
+  standalone: true,
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrl: './dashboard.component.css'
+  styleUrl: './dashboard.component.css',
+  imports: [CommonModule, NgFor]
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   protected subscription: Subscription | null = null;
@@ -14,10 +17,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private orgService = inject(RegisterService);
   private authService = inject(AuthService);
 
-  @ViewChild('header', { read: ViewContainerRef })
-  viewContainer!: ViewContainerRef;
-
-   async ngOnInit() {
+   ngOnInit() {
     this.subscription = this.orgService.get()
       .subscribe({
         next: val => {
@@ -25,10 +25,6 @@ export class DashboardComponent implements OnInit, OnDestroy {
         }
       });
 
-     const module = await import('header/Component');
-     const ref = this.viewContainer.createComponent(module.HeaderComponent);
-     // const compInstance = ref.instance;
-     // compInstance.ngOnInit()
   }
 
   ngOnDestroy(): void {

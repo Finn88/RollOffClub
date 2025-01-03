@@ -1,17 +1,20 @@
 using Application.CQRS;
 using Domain.Entities;
+using Infrastructure.Data;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OrganizationsController : BaseApiController
+    public class OrganizationsController(IRepositoryFactory factory) : BaseApiController
     {
         [HttpGet()]
         public async Task<ActionResult> Get()
         {
-            var items = await Mediator.Send(new GetAll<Organization>.Query { });
+            var repository = factory.Get<Organization>();
+            var items = await repository.GetAllAsync();
+            //   var items = await Mediator.Send(new GetAll<Organization>.Query { });
             return Ok(items);
         }
 
